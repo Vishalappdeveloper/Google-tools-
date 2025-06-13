@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head><title>Image Cropper</title></head>
+<body>
+  <h2>Image Cropper</h2>
+  <input type="file" accept="image/*" onchange="cropImage(event)">
+  <canvas id="canvas"></canvas>
+  <script>
+    function cropImage(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const cropWidth = img.width / 2;
+          const cropHeight = img.height / 2;
+          canvas.width = cropWidth;
+          canvas.height = cropHeight;
+          ctx.drawImage(img, 50, 50, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+</html>
