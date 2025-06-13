@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head><title>Image Converter</title></head>
+<body>
+  <h2>Image Converter Tool</h2>
+  <input type="file" accept="image/*" id="upload"><br><br>
+  <select id="format">
+    <option value="image/png">PNG</option>
+    <option value="image/jpeg">JPEG</option>
+    <option value="image/webp">WEBP</option>
+  </select>
+  <button onclick="convert()">Convert</button>
+  <canvas id="canvas" style="display:none;"></canvas>
+  <script>
+    function convert() {
+      const file = document.getElementById('upload').files[0];
+      const format = document.getElementById('format').value;
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        img.onload = function() {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+          const link = document.createElement('a');
+          link.download = 'converted-image';
+          link.href = canvas.toDataURL(format);
+          link.click();
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+</html>
