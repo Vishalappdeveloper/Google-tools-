@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head><title>Image Rotator/Flipper</title></head>
+<body>
+  <h2>Image Rotator/Flipper</h2>
+  <input type="file" accept="image/*" onchange="load(event)">
+  <button onclick="rotate()">Rotate 90°</button>
+  <button onclick="flip()">Flip Horizontally</button>
+  <canvas id="canvas"></canvas>
+  <script>
+    let img = new Image();
+    let angle = 0;
+    let flipH = false;
+    function load(event) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        img.onload = () => draw();
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function draw() {
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = img.height;
+      canvas.height = img.width;
+      ctx.save();
+      if (flipH) {
+        ctx.translate(canvas.width, 0);
+        ctx.scale(-1, 1);
+      }
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate(angle * Math.PI / 180);
+      ctx.drawImage(img, -img.width / 2, -img.height / 2);
+      ctx.restore();
+    }
+
+    function rotate() {
+      angle += 90;
+      draw();
+    }
+
+    function flip() {
+      flipH = !flipH;
+      draw();
+    }
+  </script>
+</body>
+</html>
