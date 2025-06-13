@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head><title>Image Compressor</title></head>
+<body>
+  <h2>Image Compressor</h2>
+  <input type="file" accept="image/*" onchange="compress(event)">
+  <canvas id="canvas" style="display:none;"></canvas>
+  <script>
+    function compress(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+          canvas.toBlob(blob => {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'compressed.jpg';
+            a.click();
+          }, 'image/jpeg', 0.5); // 50% quality
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+</html>
