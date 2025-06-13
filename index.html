@@ -1,144 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><!-- Modern Clean Theme -->
-<style>
-  :root {
-    --primary: #007bff;
-    --primary-dark: #0056b3;
-    --bg-light: #f9f9fb;
-    --text-dark: #1c1c1c;
-    --text-light: #fff;
-    --card-bg: #ffffff;
-    --shadow: 0 2px 10px rgba(0,0,0,0.1);
-    --border-radius: 10px;
-  }
-
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background-color: var(--bg-light);
-    color: var(--text-dark);
-  }
-
-  header {
-    background-color: var(--primary);
-    color: var(--text-light);
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    box-shadow: var(--shadow);
-  }
-
-  header h1 {
-    margin: 0;
-    font-size: 1.5rem;
-  }
-
-  nav a {
-    color: var(--text-light);
-    text-decoration: none;
-    margin-left: 1rem;
-    font-weight: 500;
-    font-size: 1rem;
-  }
-
-  .container {
-    max-width: 1000px;
-    margin: auto;
-    padding: 2rem;
-  }
-
-  h2 {
-    color: var(--primary);
-    margin-bottom: 1rem;
-  }
-
-  .tool-card {
-    background-color: var(--card-bg);
-    border-radius: var(--border-radius);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: var(--shadow);
-    transition: transform 0.2s;
-  }
-
-  .tool-card:hover {
-    transform: translateY(-3px);
-  }
-
-  input[type="file"], input[type="text"], input[type="number"], select, button {
-    display: block;
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    margin-top: 1rem;
-    border: 1px solid #ccc;
-    border-radius: var(--border-radius);
-  }
-
-  button {
-    background-color: var(--primary);
-    color: var(--text-light);
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-  }
-
-  button:hover {
-    background-color: var(--primary-dark);
-  }
-
-  canvas, img {
-    max-width: 100%;
-    margin-top: 1rem;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-  }
-
-  footer {
-    background-color: var(--primary);
-    color: var(--text-light);
-    text-align: center;
-    padding: 1.5rem;
-    margin-top: 3rem;
-  }
-
-  footer a {
-    color: #e0f0ff;
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  @media (max-width: 768px) {
-    header, .container {
-      padding: 1rem;
-    }
-    nav a {
-      display: block;
-      margin: 0.5rem 0;
-    }
-  }
-    </style>
-  
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Image Tools - Tools Hub</title>
+  <title>Tools Hub</title>
+
+  <!-- Modern Clean Theme -->
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f7fa; }
-    h1 { color: #007bff; }
-    .tool-link { margin: 10px 0; display: block; font-size: 18px; color: #007bff; text-decoration: none; }
+    :root {
+      --primary: #007bff;
+      --primary-dark: #0056b3;
+      --bg-light: #f9f9fb;
+      --text-dark: #1c1c1c;
+      --text-light: #fff;
+      --card-bg: #ffffff;
+      --shadow: 0 2px 10px rgba(0,0,0,0.1);
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--primary);
+      color: var(--text-light);
+      padding: 1rem 2rem;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap;
+      box-shadow: var(--shadow);
+    }
+    header h1 { font-size: 1.5rem; }
+    nav a {
+      color: var(--text-light);
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .hero {
+      background: var(--text-light);
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+    }
+    .hero h2 { color: var(--primary); font-size: 2rem; margin-bottom: .5rem; }
+    .hero p { color: #555; margin-bottom: 1.5rem; }
+    .hero button {
+      background: var(--primary);
+      color: var(--text-light);
+      border: none;
+      border-radius: var(--radius);
+      padding: .75rem 1.5rem;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background .3s;
+    }
+    .hero button:hover {
+      background: var(--primary-dark);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .tool-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    .tool-card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    .tool-card h4 {
+      margin-bottom: .5rem;
+      color: var(--primary);
+    }
+    .tool-card p {
+      font-size: .95rem;
+      color: #555;
+      flex-grow: 1;
+    }
+    .tool-card button {
+      margin-top: 1rem;
+      background: var(--primary);
+      color: var(--text-light);
+      border: none;
+      padding: .5rem 1rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: .95rem;
+      transition: background .3s;
+    }
+    .tool-card button:hover {
+      background: var(--primary-dark);
+    }
+
+    footer {
+      background: var(--primary);
+      color: var(--text-light);
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+    footer a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    @media (max-width: 600px) {
+      header { flex-direction: column; align-items: flex-start; }
+      nav { margin-top: .5rem; width: 100%; }
+      nav a { display: block; margin: .5rem 0; }
+      .tool-card { padding: 1rem; }
+    }
   </style>
 </head>
 <body>
-  <h1>🖼 Image Tools - Tools Hub</h1>
-  <a class="tool-link" href="image-converter.html">Image Converter</a>
-  <a class="tool-link" href="image-compressor.html">Image Compressor</a>
-  <a class="tool-link" href="image-resizer.html">Image Resizer</a>
-  <a class="tool-link" href="image-cropper.html">Image Cropper</a>
-  <a class="tool-link" href="image-to-text.html">Image to Text (OCR)</a>
-  <a class="tool-link" href="image-rotator.html">Image Rotator/Flipper</a>
+
+  <header>
+    <h1>Tools Hub</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#tools">Tools</a>
+      <a href="mailto:vishalappdeveloper@gmail.com">Contact</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h2>Your Daily Tools, All in One Place</h2>
+    <p>Convert, calculate, compress, and simplify your everyday tasks — fast and free.</p>
+    <button onclick="scrollToTools()">Explore Tools</button>
+  </div>
+
+  <div id="tools" class="container">
+    <div class="tool-grid">
+      <div class="tool-card">
+        <h4>Image Converter</h4>
+        <p>Convert images between PNG, JPG, WEBP formats.</p>
+        <button onclick="window.location='image-converter.html'">Use Tool</button>
+      </div>
+      <div class="tool-card">
+        <h4>Image Compressor</h4>
+        <p>Reduce image size with quality control.</p>
+        <button onclick="window.location='image-compressor.html'">Use Tool</button>
+      </div>
+      <div class="tool-card">
+        <h4>Image Resizer</h4>
+        <p>Resize images to custom dimensions.</p>
+        <button onclick="window.location='image-resizer.html'">Use Tool</button>
+      </div>
+      <div class="tool-card">
+        <h4>Image Cropper</h4>
+        <p>Crop selected region from image.</p>
+        <button onclick="window.location='image-cropper.html'">Use Tool</button>
+      </div>
+      <div class="tool-card">
+        <h4>OCR (Image to Text)</h4>
+        <p>Extract text from images using OCR.</p>
+        <button onclick="window.location='image-to-text.html'">Use Tool</button>
+      </div>
+      <div class="tool-card">
+        <h4>Image Rotator</h4>
+        <p>Rotate or flip images easily.</p>
+        <button onclick="window.location='image-rotator.html'">Use Tool</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Tools Hub • <a href="mailto:vishalappdeveloper@gmail.com">Contact Developer</a></p>
+  </footer>
+
+  <script>
+    function scrollToTools() {
+      document.getElementById('tools').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
 </body>
 </html>
