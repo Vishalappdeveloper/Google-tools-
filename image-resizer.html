@@ -1,34 +1,64 @@
 <!DOCTYPE html>
-<html>
-<head><title>Image Resizer</title></head>
-<body>
-  <h2>Image Resizer</h2>
-  <input type="file" accept="image/*" onchange="loadImage(event)">
-  <br><input id="width" placeholder="Width" type="number">
-  <input id="height" placeholder="Height" type="number">
-  <button onclick="resize()">Resize & Download</button>
-  <canvas id="canvas" style="display:none;"></canvas>
-  <script>
-    let img;
-    function loadImage(e) {
-      const reader = new FileReader();
-      reader.onload = function(ev) {
-        img = new Image();
-        img.src = ev.target.result;
-      };
-      reader.readAsDataURL(e.target.files[0]);
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Resizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4f9; margin: 0; padding: 0; }
+    header, footer {
+      background-color: #007bff; color: #fff; padding: 1rem 2rem; text-align: center;
     }
+    .container {
+      max-width: 600px; margin: 2rem auto; background: #fff;
+      padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    input, button {
+      width: 100%; margin-top: 1rem; padding: 0.75rem;
+      border-radius: 6px; border: 1px solid #ccc; font-size: 1rem;
+    }
+    button {
+      background: #007bff; color: #fff; border: none; cursor: pointer;
+    }
+    button:hover { background: #0056b3; }
+    canvas, img { max-width: 100%; margin-top: 1rem; display: block; }
+  </style>
+</head>
+<body>
+  <header><h1>Tools Hub - Image Resizer</h1></header>
+  <div class="container">
+    <input type="file" id="imgInput" accept="image/*" />
+    <input type="number" id="width" placeholder="New Width (px)">
+    <input type="number" id="height" placeholder="New Height (px)">
+    <canvas id="canvas" style="display:none;"></canvas>
+    <img id="preview" />
+    <button onclick="resize()">Resize & Download</button>
+  </div>
+  <footer><p>&copy; 2025 Tools Hub</p></footer>
+
+  <script>
+    const input = document.getElementById('imgInput');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const preview = document.getElementById('preview');
+    let img = new Image();
+
+    input.addEventListener('change', e => {
+      const reader = new FileReader();
+      reader.onload = () => { img.src = reader.result; };
+      reader.readAsDataURL(e.target.files[0]);
+    });
+
+    img.onload = () => { preview.src = img.src; };
 
     function resize() {
-      const w = parseInt(document.getElementById('width').value);
-      const h = parseInt(document.getElementById('height').value);
-      const canvas = document.getElementById('canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = w;
-      canvas.height = h;
-      ctx.drawImage(img, 0, 0, w, h);
+      const width = parseInt(document.getElementById('width').value);
+      const height = parseInt(document.getElementById('height').value);
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
       const link = document.createElement('a');
-      link.download = 'resized.png';
+      link.download = 'resized.jpg';
       link.href = canvas.toDataURL();
       link.click();
     }
