@@ -1,22 +1,74 @@
-<header>
-  <h1>Tools Hub</h1>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="#">About</a>
-  </nav>
-</header>
-
-<div class="container">
-  <h2>Image Converter</h2>
-  <div class="tool-card">
-    <!-- Your tool UI and logic here -->
-    <input type="file" />
-    <select><option>PNG</option></select>
-    <button>Convert</button>
-    <canvas></canvas>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Converter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4f9; margin: 0; padding: 0; }
+    header, footer {
+      background-color: #007bff; color: #fff; padding: 1rem 2rem;
+      text-align: center;
+    }
+    .container {
+      max-width: 600px; margin: 2rem auto; background: #fff;
+      padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    input, select, button {
+      width: 100%; margin-top: 1rem; padding: 0.75rem;
+      border-radius: 6px; border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      background: #007bff; color: #fff; border: none;
+      cursor: pointer;
+    }
+    button:hover { background: #0056b3; }
+    canvas, img { max-width: 100%; margin-top: 1rem; display: block; }
+  </style>
+</head>
+<body>
+  <header><h1>Tools Hub - Image Converter</h1></header>
+  <div class="container">
+    <input type="file" id="imgInput" accept="image/*" />
+    <select id="format">
+      <option value="image/png">PNG</option>
+      <option value="image/jpeg">JPG</option>
+      <option value="image/webp">WEBP</option>
+    </select>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <img id="preview" />
+    <button onclick="convertImage()">Convert & Download</button>
   </div>
-</div>
+  <footer><p>&copy; 2025 Tools Hub</p></footer>
 
-<footer>
-  <p>&copy; 2025 Tools Hub • <a href="mailto:vishalappdeveloper@gmail.com">Contact Us</a></p>
-</footer>
+  <script>
+    const input = document.getElementById('imgInput');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const preview = document.getElementById('preview');
+    let img = new Image();
+
+    input.addEventListener('change', e => {
+      const reader = new FileReader();
+      reader.onload = () => { img.src = reader.result; };
+      reader.readAsDataURL(e.target.files[0]);
+    });
+
+    img.onload = () => {
+      preview.src = img.src;
+    };
+
+    function convertImage() {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      const format = document.getElementById('format').value;
+      const link = document.createElement('a');
+      link.download = `converted.${format.split('/')[1]}`;
+      link.href = canvas.toDataURL(format);
+      link.click();
+    }
+  </script>
+</body>
+</html>
