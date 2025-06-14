@@ -1,28 +1,64 @@
 <!DOCTYPE html>
-<html>
-<head><title>Image Cropper</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Cropper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4f9; margin: 0; padding: 0; }
+    header, footer {
+      background-color: #007bff; color: #fff; padding: 1rem 2rem; text-align: center;
+    }
+    .container {
+      max-width: 600px; margin: 2rem auto; background: #fff;
+      padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    input, button {
+      width: 100%; margin-top: 1rem; padding: 0.75rem;
+      border-radius: 6px; border: 1px solid #ccc; font-size: 1rem;
+    }
+    button {
+      background: #007bff; color: #fff; border: none; cursor: pointer;
+    }
+    button:hover { background: #0056b3; }
+    canvas { max-width: 100%; margin-top: 1rem; display: block; }
+  </style>
+</head>
 <body>
-  <h2>Image Cropper</h2>
-  <input type="file" accept="image/*" onchange="cropImage(event)">
-  <canvas id="canvas"></canvas>
+  <header><h1>Tools Hub - Image Cropper</h1></header>
+  <div class="container">
+    <input type="file" id="imgInput" accept="image/*" />
+    <canvas id="canvas"></canvas>
+    <button onclick="crop()">Crop & Download</button>
+  </div>
+  <footer><p>&copy; 2025 Tools Hub</p></footer>
+
   <script>
-    function cropImage(event) {
-      const file = event.target.files[0];
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let img = new Image();
+
+    document.getElementById('imgInput').addEventListener('change', e => {
       const reader = new FileReader();
-      const canvas = document.getElementById('canvas');
-      const ctx = canvas.getContext('2d');
-      reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-          const cropWidth = img.width / 2;
-          const cropHeight = img.height / 2;
-          canvas.width = cropWidth;
-          canvas.height = cropHeight;
-          ctx.drawImage(img, 50, 50, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
+      reader.onload = () => { img.src = reader.result; };
+      reader.readAsDataURL(e.target.files[0]);
+    });
+
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+    };
+
+    function crop() {
+      const cropped = ctx.getImageData(50, 50, 200, 200);
+      canvas.width = 200;
+      canvas.height = 200;
+      ctx.putImageData(cropped, 0, 0);
+      const link = document.createElement('a');
+      link.download = 'cropped.jpg';
+      link.href = canvas.toDataURL();
+      link.click();
     }
   </script>
 </body>
